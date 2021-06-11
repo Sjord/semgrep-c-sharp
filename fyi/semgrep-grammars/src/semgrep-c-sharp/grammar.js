@@ -23,6 +23,11 @@ module.exports = grammar(standard_grammar, {
   */
   name: 'c_sharp',
 
+  conflicts: ($, previous) => [
+    ...previous,
+    [$._expression, $.parameter]
+  ],
+
   rules: {
 
     // Entry point
@@ -59,6 +64,14 @@ module.exports = grammar(standard_grammar, {
         ...previous.members,
         $.ellipsis,
         $.deep_ellipsis
+      );
+    },
+
+    // Parameter ellipsis
+    parameter: ($, previous) => {
+      return choice(
+        previous,
+        $.ellipsis
       );
     },
 
